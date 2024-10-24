@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Product Store with ISR
 
-## Getting Started
+Это приложение, созданное с использованием Next.js, демонстрирует возможности статической генерации и инкрементальной перестройки (ISR). В приложении представлены страницы питомцев, которые генерируются статически и обновляются при изменении данных.
 
-First, run the development server:
+## Установка
+
+1. Склонируйте репозиторий:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+   git clone https://github.com/your-username/your-repo.git
+   cd your-repo
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Установите зависимости
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+   npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Запуск проекта
 
-## Learn More
+Для запуска проекта используйте следующую команду:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+   npm run build
+   npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Проверка функциональности
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Проверка статической генерации и инкрементальной перестройки (ISR):
+   Доказательство работы ISR: cтраницы питомцев генерируются статически на этапе сборки и могут обновляться инкрементально.
+   В файле app/pets/[id]/page.tsx задано значение revalidate 15 секунд, после изменения данных страницы пересобираются и изменения отображаются после указанного интервала.
+   Чтобы проверить это, можно:
+   Изменить данные питомца в исходном массиве pets или подключить внешний API с изменяемыми данными. Данные можно изменить нажав на кнопку "Изменить имя на Тузик"
+   Дождаться пересборки после заданного интервала времени.
+   Открыть страницу питомца в браузере и убедиться, что отображаются обновленные данные.
+2. Проверка наличия необходимых страниц:
+   На главной странице есть ссылка на страницу с питомцами.
+   Проверить, что страница доступна по корневому пути /.
+   Страница списка питомцев (app/pets/page.tsx):
+   Убедиться, что отображается список питомцев с ссылками на страницы отдельных питомцев.
+   Проверить, что страница доступна по пути /pets.
+   Страницы отдельных питомцев (app/pets/[id]/page.tsx):
+   Проверить, что страницы доступны по динамическому пути /pets/[id], где [id] — это идентификатор питомца.
+   Убедиться, что страница питомца корректно отображает его название и описание.
+3. Проверка подхода ISR:
+   Использование параметра revalidate:
+   В коде (app/pets/[id]/page.tsx) быть явно указано значение revalidate, чтобы Next.js выполнял инкрементальную перестройку.
+   Заказчику можно показать строку export const revalidate = 60 и объяснить, что это позволяет обновлять страницу каждые 15 секунд.
+   Генерация статических параметров (generateStaticParams):
+   В коде должна присутствовать функция generateStaticParams, которая генерирует статические пути для страниц питомцев.
+   Эта функция используется для генерации статических страниц на этапе сборки.
+4. Использование TypeScript:
+   Убедиться, что код написан с применением TypeScript, и типы данных указаны для компонентов и параметров.
